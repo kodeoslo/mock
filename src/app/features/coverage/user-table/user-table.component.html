@@ -1,0 +1,13 @@
+
+<input type='text' placeholder='quick filter' (keyup)='setQuickFilter()' [(ngModel)]='quickFilter' />
+
+<ag-grid-angular
+  #agGrid
+  style='width: 100%; height: 700px;'
+  class='ag-theme-alpine'
+  [rowData]='wantedDatastructure$ | async'
+  [columnDefs]='columns'
+  rowSelection='multiple'
+  [pagination]="true"
+>
+</ag-grid-angular>
