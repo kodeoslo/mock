@@ -6,6 +6,8 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { mergeMap, switchMap, retry, map, catchError, filter, scan, reduce } from 'rxjs/operators';
 import { ICellRendererParams, ValueGetterParams } from 'ag-grid-community';
 import { ROLES } from '../../../mock-data';
+import { CheckboxRendererComponent } from '../checkbox-renderer/checkbox-renderer.component';
+
 
 function groupBy<T, A>(list: T[], keyGetter: (x: T) => void): Map<A, T> {
   const newMap = new Map();
@@ -21,7 +23,7 @@ function groupBy<T, A>(list: T[], keyGetter: (x: T) => void): Map<A, T> {
   return newMap;
 }
 
-function checkBoxRenderer(params: ICellRendererParams): HTMLElement {
+function simpleCheckBoxRenderer(params: ICellRendererParams): HTMLElement {
   const text = params.value ? 'Yes!' : 'No!';
   const newContent = document.createTextNode(text);
   const element = document.createElement('span');
@@ -43,13 +45,13 @@ export class UserTableComponent implements OnInit {
   wantedDatastructure$!: Observable<WantedDataStructure[]>;
   quickFilter = '';
 
-  rolesColums = ROLES.map(role => {
+  rolesColumns = ROLES.map(role => {
     return {
       headerName: role.role,
       valueGetter: (params: ValueGetterParams) => {
         return params.data.coverages.some((coverage: CoverageWanted) => coverage.role.role === role.role);
       },
-      cellRenderer: checkBoxRenderer,
+      cellRenderer: 'checkboxRendererComponent',
       sortable: true,
       filter: true
     };
@@ -59,7 +61,11 @@ export class UserTableComponent implements OnInit {
     ...[
       { field: 'organization.name', headerName: 'Organization', sortable: true, filter: true, checkboxSelection: true },
       { field: 'user.fullName', headerName: 'Full name', sortable: true, filter: true }
-    ], ...this.rolesColums];
+    ], ...this.rolesColumns];
+
+  frameworkComponents = {
+    checkboxRendererComponent: CheckboxRendererComponent
+  };
 
   constructor(private userService: UserService) {
     this.users$ = this.userService.users$;
