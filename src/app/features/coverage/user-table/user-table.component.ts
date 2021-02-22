@@ -23,14 +23,6 @@ function groupBy<T, A>(list: T[], keyGetter: (x: T) => void): Map<A, T> {
   return newMap;
 }
 
-function simpleCheckBoxRenderer(params: ICellRendererParams): HTMLElement {
-  const text = params.value ? 'Yes!' : 'No!';
-  const newContent = document.createTextNode(text);
-  const element = document.createElement('span');
-  element.appendChild(newContent);
-  return element;
-}
-
 @Component({
   selector: 'app-user-table',
   templateUrl: './user-table.component.html',
